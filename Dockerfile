@@ -65,7 +65,6 @@ RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.alpine.sh' 
 
 USER climber
 # configure git (needed for symnfony cli)
-# @todo test if ok
 ARG GIT_EMAIL
 ARG GIT_USERNAME
 RUN git config --global user.email "${GIT_EMAIL}" \
