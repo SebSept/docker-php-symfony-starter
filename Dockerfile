@@ -1,11 +1,15 @@
 # syntax=docker/dockerfile:labs
-# You can redefined theses values in the compose.yml file.
 ARG COMPOSER_VERSION=2.6.5
 ARG PHP_VERSION=8.3.4
 ARG GIT_EMAIL="seb@local.fr"
 ARG GIT_USERNAME="seb"
 ARG ALPINE_VERSION=3.18
 ARG PHP_CS_FIXER_VERSION=3.52.1
+
+# Do not expose the port to the host.
+# https://hub.docker.com/_/php
+# WARNING: the FastCGI protocol is inherently trusting, and thus extremely insecure to expose outside of a private container network -- unless you know exactly what you are doing (and are willing to accept the extreme risk), do not use Docker's --publish (-p) flag with this image variant.
+EXPOSE 9000/tcp
 
 FROM php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION} AS php
 
@@ -61,7 +65,9 @@ RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.alpine.sh' 
 
 USER climber
 # configure git (needed for symnfony cli)
-# does not work @todo fix it
+# @todo test if ok
+ARG GIT_EMAIL
+ARG GIT_USERNAME
 RUN git config --global user.email "${GIT_EMAIL}" \
     && git config --global user.name "${GIT_USERNAME}"
 
