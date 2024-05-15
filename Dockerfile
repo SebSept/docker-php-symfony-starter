@@ -9,9 +9,9 @@ ARG PHP_CS_FIXER_VERSION=3.52.1
 # Do not expose the port to the host.
 # https://hub.docker.com/_/php
 # WARNING: the FastCGI protocol is inherently trusting, and thus extremely insecure to expose outside of a private container network -- unless you know exactly what you are doing (and are willing to accept the extreme risk), do not use Docker's --publish (-p) flag with this image variant.
-EXPOSE 9000/tcp
 
 FROM php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION} AS php
+EXPOSE 9000/tcp
 
 # config system
 # git is required for symfony cli
