@@ -1,10 +1,12 @@
 # syntax=docker/dockerfile:labs
-ARG COMPOSER_VERSION=2.6.5
+ARG COMPOSER_VERSION=2.7.6
+# voir https://hub.docker.com/_/php/tags?page=&page_size=&ordering=&name=fpm-a
 ARG PHP_VERSION=8.3.7
+ARG ALPINE_VERSION=3.20
+# https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases
+ARG PHP_CS_FIXER_VERSION=3.57.2
 ARG GIT_EMAIL="seb@local.fr"
 ARG GIT_USERNAME="seb"
-ARG ALPINE_VERSION=3.20
-ARG PHP_CS_FIXER_VERSION=3.52.1
 
 # Do not expose the port to the host.
 # https://hub.docker.com/_/php
