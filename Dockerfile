@@ -15,7 +15,7 @@ EXPOSE 9000/tcp
 
 # config system
 # git is required for symfony cli
-RUN apk update \
+RUN apk update --no-cache \
     && apk add fish bash git
 
 # Add php extension installer
@@ -60,7 +60,7 @@ RUN wget https://github.com/bobthecow/psysh/releases/download/v0.12.0/psysh-v0.1
 
 # Add symfony cli
 RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.alpine.sh' | bash \
-    && apk add symfony-cli \
+    && apk --no-cache add symfony-cli \
     && symfony local:check:requirements
 
 USER climber
