@@ -1,9 +1,13 @@
 # syntax=docker/dockerfile:labs
-ARG COMPOSER_VERSION=2.6.5
-ARG PHP_VERSION=8.3.4
+# https://github.com/composer/composer/releases/
+ARG COMPOSER_VERSION=2.7.6
+# voir https://hub.docker.com/_/php/tags?page=&page_size=&ordering=&name=fpm-a
+ARG PHP_VERSION=8.3.7
+ARG ALPINE_VERSION=3.20
+# https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases
+ARG PHP_CS_FIXER_VERSION=3.57.2
 ARG GIT_EMAIL="seb@local.fr"
 ARG GIT_USERNAME="seb"
-ARG ALPINE_VERSION=3.18
 
 # Do not expose the port to the host.
 # https://hub.docker.com/_/php
@@ -14,7 +18,7 @@ EXPOSE 9000/tcp
 
 # config system
 # git is required for symfony cli
-RUN apk update \
+RUN apk update --no-cache \
     && apk add fish bash git
 
 # Add php extension installer
@@ -49,7 +53,7 @@ RUN chown climber /app && mkdir -p /app/vendor/bin/
 # Add symfony cli
 # will probably be removed to production image
 RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.alpine.sh' | bash \
-    && apk add symfony-cli \
+    && apk --no-cache add symfony-cli \
     && symfony local:check:requirements
 
 USER climber
