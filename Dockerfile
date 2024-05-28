@@ -1,9 +1,9 @@
 # syntax=docker/dockerfile:labs
 ARG COMPOSER_VERSION=2.6.5
-ARG PHP_VERSION=8.3.4
+ARG PHP_VERSION=8.3.7
 ARG GIT_EMAIL="seb@local.fr"
 ARG GIT_USERNAME="seb"
-ARG ALPINE_VERSION=3.18
+ARG ALPINE_VERSION=3.20
 ARG PHP_CS_FIXER_VERSION=3.52.1
 
 # Do not expose the port to the host.
