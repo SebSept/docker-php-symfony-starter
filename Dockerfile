@@ -1,4 +1,5 @@
 # syntax=docker/dockerfile:labs
+# https://github.com/composer/composer/releases/
 ARG COMPOSER_VERSION=2.7.6
 # voir https://hub.docker.com/_/php/tags?page=&page_size=&ordering=&name=fpm-a
 ARG PHP_VERSION=8.3.7
