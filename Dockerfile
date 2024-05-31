@@ -15,6 +15,8 @@ ARG GIT_USERNAME="seb"
 
 FROM php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION} AS php
 EXPOSE 9000/tcp
+# see configuration : https://hub.docker.com/_/php
+RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
 # config system
 # git is required for symfony cli
