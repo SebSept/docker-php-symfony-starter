@@ -85,7 +85,7 @@ RUN mkdir -p /app/var/
 RUN chown www-data:www-data /app -R
 
 RUN apk update --no-cache \
-    && apk add fish git supervisor \
+    && apk add fish supervisor \
     && apk cache clean
 
 USER www-data
@@ -96,7 +96,7 @@ RUN mkdir /app/vendor/bin -p
 RUN ["fish", "-c fish_add_path /app/vendor/bin"]
 
 # configure git (needed for symnfony cli)
-ARG GIT_EMAIL
-ARG GIT_USERNAME
-RUN git config --global user.email "${GIT_EMAIL}" \
-    && git config --global user.name "${GIT_USERNAME}"
+#ARG GIT_EMAIL
+#ARG GIT_USERNAME
+#RUN git config --global user.email "${GIT_EMAIL}" \
+#    && git config --global user.name "${GIT_USERNAME}"
