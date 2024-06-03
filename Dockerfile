@@ -52,11 +52,11 @@ RUN install-php-extensions xdebug
 # or get the binary from the composer docker image
 # maybe getting the binary from the composer image is better for docker scout scanning ...
 ARG COMPOSER_VERSION
-ADD --chown=www-data:www-data https://github.com/composer/composer/releases/download/${COMPOSER_VERSION}/composer.phar \
+ADD --chown=www-data:www-data --chmod=755 https://github.com/composer/composer/releases/download/${COMPOSER_VERSION}/composer.phar \
     /usr/local/bin/composer
 
 # Add psysh - https://github.com/bobthecow/psysh
-ADD --chown=www-data:www-data https://github.com/bobthecow/psysh/releases/download/v0.12.0/psysh-v0.12.0.tar.gz \
+ADD --chown=www-data:www-data --chmod=755 https://github.com/bobthecow/psysh/releases/download/v0.12.0/psysh-v0.12.0.tar.gz \
     /usr/local/bin/psysh
 
 # Add symfony cli
@@ -67,7 +67,7 @@ ADD --chown=www-data:www-data https://github.com/bobthecow/psysh/releases/downlo
 
 # Add php-cs-fixer
 ARG PHP_CS_FIXER_VERSION
-ADD --chown=www-data:www-data https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/download/v${PHP_CS_FIXER_VERSION}/php-cs-fixer.phar \
+ADD --chown=www-data:www-data  --chmod=755 https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/download/v${PHP_CS_FIXER_VERSION}/php-cs-fixer.phar \
     /usr/local/bin/php-cs-fixer
 
 # ------------------
@@ -81,7 +81,6 @@ COPY --from=php-builder /usr/lib /usr/lib
 EXPOSE 9000/tcp
 
 # Create app directory & vendor/bin (needed ?)
-WORKDIR /app
 RUN mkdir -p /app/var/
 RUN chown www-data:www-data /app -R
 
@@ -90,6 +89,7 @@ RUN apk update --no-cache \
     && apk cache clean
 
 USER www-data
+WORKDIR /app
 
 # Add composer binaries to path
 RUN mkdir /app/vendor/bin -p
