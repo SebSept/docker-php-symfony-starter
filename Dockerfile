@@ -38,7 +38,8 @@ ADD --chmod=755 \
 # json, mbstring (bundled)
 # opcache, apcu required for internal php/symfony performance
 # imagick for image manipulation, @see https://github.com/liip/LiipImagineBundle
-RUN install-php-extensions intl pdo_pgsql opcache apcu imagick
+RUN install-php-extensions intl pdo_pgsql opcache apcu
+RUN install-php-extensions imagick
 
 # dev extensions
 # To start xdebug for a interactive cli use this :
