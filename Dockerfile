@@ -17,8 +17,9 @@ FROM php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION} AS php-builder
 
 # Use php development configuration
 # see configuration : https://hub.docker.com/_/php
-RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
-
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+# 256 MB de mémoire
+RUN sed -i 's/memory_limit = 128M/memory_limit = 256M/' "$PHP_INI_DIR/php.ini"
 # config system
 # git is required for symfony cli
 # supervisor is required for worker (then messenger)
@@ -40,7 +41,7 @@ ADD --chmod=755 \
 # imagick for image manipulation, @see https://github.com/liip/LiipImagineBundle
 RUN install-php-extensions intl pdo_pgsql
 RUN install-php-extensions opcache apcu
-RUN install-php-extensions imagick
+RUN install-php-extensions gmagick
 
 # dev extensions
 # To start xdebug for a interactive cli use this :
@@ -71,7 +72,7 @@ RUN mkdir -p /app/var/
 RUN chown www-data:www-data /app -R
 
 RUN apk update --no-cache \
-    && apk add fish git supervisor \
+    && apk add fish git supervisor icu icu-data-full \
     && apk cache clean
 
 USER www-data
