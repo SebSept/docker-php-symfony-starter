@@ -88,7 +88,7 @@ RUN mkdir -p /app/var/
 RUN chown www-data:www-data /app -R
 
 RUN apk update --no-cache \
-    && apk add fish git supervisor \
+    && apk add fish git supervisor icu icu-data-full \
     && apk cache clean
 
 USER www-data
