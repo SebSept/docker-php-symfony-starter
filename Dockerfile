@@ -18,7 +18,8 @@ FROM php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION} AS php-builder
 # Use php development configuration
 # see configuration : https://hub.docker.com/_/php
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
-
+# 256 MB de mémoire
+RUN sed -i 's/memory_limit = 128M/memory_limit = 256M/' "$PHP_INI_DIR/php.ini"
 # config system
 # git is required for symfony cli
 # supervisor is required for worker (then messenger)
