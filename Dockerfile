@@ -41,7 +41,7 @@ ADD --chmod=755 \
 # imagick for image manipulation, @see https://github.com/liip/LiipImagineBundle
 RUN install-php-extensions intl pdo_pgsql
 RUN install-php-extensions opcache apcu
-RUN install-php-extensions imagick
+RUN install-php-extensions gmagick
 
 # dev extensions
 # To start xdebug for a interactive cli use this :
