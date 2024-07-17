@@ -2,7 +2,7 @@
 # https://github.com/composer/composer/releases/
 ARG COMPOSER_VERSION=2.7.7
 # voir https://hub.docker.com/_/php/tags?page=&page_size=&ordering=&name=fpm-a
-ARG PHP_VERSION=8.3.7
+ARG PHP_VERSION=8.3.9
 ARG ALPINE_VERSION=3.20
 # https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases
 ARG PHP_CS_FIXER_VERSION=3.57.2
