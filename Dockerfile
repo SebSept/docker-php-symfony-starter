@@ -87,15 +87,18 @@ COPY --from=php-builder /usr/lib /usr/lib
 
 EXPOSE 9000/tcp
 
+RUN addgroup -g 1001 dev && \
+    adduser -u 1000 -G dev -s /usr/bin/fish -D dev
+
 # Create app directory & vendor/bin (needed ?)
 RUN mkdir -p /app/var/
-RUN chown www-data:www-data /app -R
+RUN chown dev:dev /app -R
 
 RUN apk update --no-cache \
     && apk add fish git supervisor icu icu-data-full \
     && apk cache clean
 
-USER www-data
+USER dev
 WORKDIR /app
 
 # Add composer binaries to path
