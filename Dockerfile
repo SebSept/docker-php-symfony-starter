@@ -1,11 +1,14 @@
 # syntax=docker/dockerfile:labs
+# Security : Before using, check the latest version of the tools
 # https://github.com/composer/composer/releases/
-ARG COMPOSER_VERSION=2.7.6
+ARG COMPOSER_VERSION=2.8.4
 # voir https://hub.docker.com/_/php/tags?page=&page_size=&ordering=&name=fpm-a
-ARG PHP_VERSION=8.3.7
-ARG ALPINE_VERSION=3.20
+ARG PHP_VERSION=8.3.14
+ARG ALPINE_VERSION=3.21
 # https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases
-ARG PHP_CS_FIXER_VERSION=3.57.2
+ARG PHP_CS_FIXER_VERSION=3.65.0
+# https://github.com/bobthecow/psysh/releases
+ARG PSYSH_VERSION=0.12.7
 ARG GIT_EMAIL="seb@local.fr"
 ARG GIT_USERNAME="seb"
 
@@ -34,6 +37,12 @@ ADD --chmod=755 \
     https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions \
     /usr/local/bin/
 
+# dev extensions
+# To start xdebug for a interactive cli use this :
+# XDEBUG_MODE=debug XDEBUG_SESSION=1 XDEBUG_CONFIG="client_host=172.17.0.1 client_port=9003" PHP_IDE_CONFIG="serverName=myrepl" php /app/hello.php
+# A phpstorm server with the appropriate name is also needed ( Config : PHP > Servers )
+RUN install-php-extensions xdebug
+
 # runtime extensions - https://symfony.com/doc/current/setup.html#technical-requirements
 # already bundled : Ctype , iconv, PCRE, Session, Tokenizer, simplexml
 # json, mbstring (bundled)
@@ -41,13 +50,7 @@ ADD --chmod=755 \
 # imagick for image manipulation, @see https://github.com/liip/LiipImagineBundle
 RUN install-php-extensions intl pdo_pgsql
 RUN install-php-extensions opcache apcu
-RUN install-php-extensions gmagick
-
-# dev extensions
-# To start xdebug for a interactive cli use this :
-# XDEBUG_MODE=debug XDEBUG_SESSION=1 XDEBUG_CONFIG="client_host=172.17.0.1 client_port=9003" PHP_IDE_CONFIG="serverName=myrepl" php /app/hello.php
-# A phpstorm server with the appropriate name is also needed ( Config : PHP > Servers )
-RUN install-php-extensions xdebug
+RUN install-php-extensions gmagick gd
 
 # Add composer
 # We may also use `install-php-extensions @composer` (not tested)
@@ -59,7 +62,7 @@ ADD --chown=www-data:www-data --chmod=755 https://github.com/composer/composer/r
     /usr/local/bin/composer
 
 # Add psysh - https://github.com/bobthecow/psysh
-ADD --chown=www-data:www-data --chmod=755 https://github.com/bobthecow/psysh/releases/download/v0.12.0/psysh-v0.12.0.tar.gz \
+ADD --chown=www-data:www-data --chmod=755 https://github.com/bobthecow/psysh/releases/download/${PSYSH_VERSION}/psysh-${PSYSH_VERSION}.tar.gz \
     /usr/local/bin/psysh
 
 # Add symfony cli
