@@ -37,12 +37,6 @@ ADD --chmod=755 \
     https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions \
     /usr/local/bin/
 
-# dev extensions
-# To start xdebug for a interactive cli use this :
-# XDEBUG_MODE=debug XDEBUG_SESSION=1 XDEBUG_CONFIG="client_host=172.17.0.1 client_port=9003" PHP_IDE_CONFIG="serverName=myrepl" php /app/hello.php
-# A phpstorm server with the appropriate name is also needed ( Config : PHP > Servers )
-RUN install-php-extensions xdebug
-
 # runtime extensions - https://symfony.com/doc/current/setup.html#technical-requirements
 # already bundled : Ctype , iconv, PCRE, Session, Tokenizer, simplexml
 # json, mbstring (bundled)
@@ -50,7 +44,13 @@ RUN install-php-extensions xdebug
 # imagick for image manipulation, @see https://github.com/liip/LiipImagineBundle
 RUN install-php-extensions intl pdo_pgsql
 RUN install-php-extensions opcache apcu
-RUN install-php-extensions gmagick gd
+RUN install-php-extensions gmagick
+
+# dev extensions
+# To start xdebug for a interactive cli use this :
+# XDEBUG_MODE=debug XDEBUG_SESSION=1 XDEBUG_CONFIG="client_host=172.17.0.1 client_port=9003" PHP_IDE_CONFIG="serverName=myrepl" php /app/hello.php
+# A phpstorm server with the appropriate name is also needed ( Config : PHP > Servers )
+RUN install-php-extensions xdebug
 
 # Add composer
 # We may also use `install-php-extensions @composer` (not tested)
