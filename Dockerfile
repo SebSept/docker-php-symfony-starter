@@ -62,6 +62,7 @@ ADD --chown=www-data:www-data --chmod=755 https://github.com/composer/composer/r
     /usr/local/bin/composer
 
 # Add psysh - https://github.com/bobthecow/psysh
+ARG PSYSH_VERSION
 ADD --chown=www-data:www-data --chmod=755 https://github.com/bobthecow/psysh/releases/download/${PSYSH_VERSION}/psysh-${PSYSH_VERSION}.tar.gz \
     /usr/local/bin/psysh
 
