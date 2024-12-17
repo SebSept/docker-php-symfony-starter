@@ -63,7 +63,7 @@ ADD --chown=www-data:www-data --chmod=755 https://github.com/composer/composer/r
 
 # Add psysh - https://github.com/bobthecow/psysh
 ARG PSYSH_VERSION
-ADD --chown=www-data:www-data --chmod=755 https://github.com/bobthecow/psysh/releases/download/${PSYSH_VERSION}/psysh-${PSYSH_VERSION}.tar.gz \
+ADD --chown=www-data:www-data --chmod=755 https://github.com/bobthecow/psysh/releases/download/v${PSYSH_VERSION}/psysh-v${PSYSH_VERSION}.tar.gz \
     /usr/local/bin/psysh
 
 # Add symfony cli
