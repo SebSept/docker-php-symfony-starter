@@ -58,13 +58,16 @@ RUN install-php-extensions xdebug
 # or get the binary from the composer docker image
 # maybe getting the binary from the composer image is better for docker scout scanning ...
 ARG COMPOSER_VERSION
-ADD --chown=www-data:www-data --chmod=755 https://github.com/composer/composer/releases/download/${COMPOSER_VERSION}/composer.phar \
+ADD --chmod=755 https://github.com/composer/composer/releases/download/${COMPOSER_VERSION}/composer.phar \
     /usr/local/bin/composer
 
 # Add psysh - https://github.com/bobthecow/psysh
+# chown is used only because in this case Docker unzips the file, rights are changed later
 ARG PSYSH_VERSION
-ADD --chown=www-data:www-data --chmod=755 https://github.com/bobthecow/psysh/releases/download/v${PSYSH_VERSION}/psysh-v${PSYSH_VERSION}.tar.gz \
-    /usr/local/bin/psysh
+RUN curl -L -o /tmp/psysh.tar.gz https://github.com/bobthecow/psysh/releases/download/v${PSYSH_VERSION}/psysh-v${PSYSH_VERSION}.tar.gz \
+    && tar -xzf /tmp/psysh.tar.gz -C /usr/local/bin/ \
+    && chmod 755 /usr/local/bin/psysh \
+    && rm /tmp/psysh.tar.gz
 
 # Add symfony cli
 # No need for this cli, since evetything is done within container
@@ -74,7 +77,7 @@ ADD --chown=www-data:www-data --chmod=755 https://github.com/bobthecow/psysh/rel
 
 # Add php-cs-fixer
 ARG PHP_CS_FIXER_VERSION
-ADD --chown=www-data:www-data  --chmod=755 https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/download/v${PHP_CS_FIXER_VERSION}/php-cs-fixer.phar \
+ADD --chmod=755 https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/download/v${PHP_CS_FIXER_VERSION}/php-cs-fixer.phar \
     /usr/local/bin/php-cs-fixer
 
 # ------------------
@@ -87,8 +90,10 @@ COPY --from=php-builder /usr/lib /usr/lib
 
 EXPOSE 9000/tcp
 
+# Create a user for fish shell, psysh, composer, php-cs-fixer
 RUN addgroup -g 1001 dev && \
     adduser -u 1000 -G dev -s /usr/bin/fish -D dev
+
 
 # Create app directory & vendor/bin (needed ?)
 RUN mkdir -p /app/var/
@@ -97,6 +102,8 @@ RUN chown dev:dev /app -R
 RUN apk update --no-cache \
     && apk add fish git supervisor icu icu-data-full \
     && apk cache clean
+
+RUN chown dev:dev /usr/local/bin/psysh /usr/local/bin/composer /usr/local/bin/php-cs-fixer
 
 USER dev
 WORKDIR /app
